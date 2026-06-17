@@ -1,7 +1,73 @@
-# MultiService-QoS-Scheduling-WRR
+# QoS课程论文实验项目说明
 
-This repository contains a course project on QoS scheduling in multi-service packet-switched networks. The project combines Packet Tracer, iperf3, Wireshark, and MATLAB to analyze how different traffic types compete on a shared bottleneck link.
+本项目对应论文《QoS课程论文_三平台实验与WRR权重优化》相关的实验素材、仿真文件、抓包数据和 MATLAB 建模代码。
 
-Packet Tracer is used to build and verify the network topology, including VLANs, routing, servers, and multi-service forwarding paths. iperf3 is used to generate controlled TCP bulk traffic, UDP small-packet traffic, and UDP large-packet traffic. Wireshark captures the real host-side packets and exports CSV data, including timestamps, protocol types, packet lengths, ports, and DSCP fields. MATLAB then uses the measured CSV data to reconstruct packet arrival sequences and service times, and compares FIFO, PQ, and WRR queue scheduling mechanisms.
+## 项目内容
 
-The project focuses on voice-like small packets, video-like large UDP packets, and data-oriented TCP bulk traffic. Different WRR weight settings are evaluated using delay, jitter, packet loss, throughput satisfaction, and Jain’s fairness index. The results show that WRR with a 3:2:1 weight provides a balanced trade-off between real-time service protection and fairness for ordinary data traffic in small multi-service LAN scenarios.
+- `Matlab源代码文件/`
+  - `qos_matlab_simulation.m`：MATLAB 队列调度仿真主脚本
+  - `figures/`：脚本生成的结果图
+- `Packet Tracer源文件/`
+  - `3.pkt`：Packet Tracer 拓扑工程文件
+- `Wireshark数据文件/`
+  - `iperf_tcp.pcapng`
+  - `iperf_udp_small.pcapng`
+  - `iperf_udp_large.pcapng`
+- `原始数据csv/`
+  - `iperf_tcp_5202_filtered.csv`
+  - `iperf_udp_small_5202_filtered.csv`
+  - `iperf_udp_large_5202_filtered.csv`
+- `shiyanFig/`
+  - 论文正文中的实验图、抓包图、仿真图
+- `Visio图/`
+  - `multi_service_fifo_queue_visio.vsdx`
+
+## 使用说明
+
+### 1. Packet Tracer
+
+打开 `Packet Tracer源文件/3.pkt` 查看拓扑或继续修改实验场景。
+
+### 2. Wireshark 抓包数据
+
+`Wireshark数据文件/` 保存了原始抓包文件，可用于复查 ICMP、HTTP、UDP、iperf3 业务流量。
+
+### 3. MATLAB 仿真
+
+运行 `Matlab源代码文件/qos_matlab_simulation.m` 可生成：
+
+- `capture_stats.csv`
+- `simulation_metrics.csv`
+- `wrr_weight_sensitivity.csv`
+- `Matlab源代码文件/figures/` 下的结果图
+
+### 4. 数据文件路径说明
+
+脚本当前默认读取同目录下的：
+
+- `iperf_udp_small.csv`
+- `iperf_udp_large.csv`
+- `iperf_tcp.csv`
+
+而项目里实际保留的是 `原始数据csv/` 下的 `*_5202_filtered.csv` 文件。
+
+如果直接运行脚本，请先：
+
+1. 将这三个 CSV 复制到 `Matlab源代码文件/`
+2. 并重命名为脚本期望的文件名
+
+或者直接修改脚本中的 `csvFiles` 路径。
+
+## 论文图对应关系
+
+`shiyanFig/` 中的图片基本对应论文第 3 章到第 5 章的实验图，包括：
+
+- Packet Tracer 拓扑与配置图
+- 真机抓包结果图
+- iperf3 对照实验图
+
+## 备注
+
+- 图像文件名已按论文图号整理，便于正文引用。
+- 如果你只想复现实验结果，优先使用 `Matlab源代码文件/qos_matlab_simulation.m` 和 `原始数据csv/`。
+- 如果你只想查看拓扑，可直接打开 `Packet Tracer源文件/3.pkt`。
